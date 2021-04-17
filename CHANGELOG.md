@@ -2,6 +2,219 @@
 
 Badges: `[UPDATED]`, `[FIXED]`, `[ADDED]`, `[DEPRECATED]`, `[REMOVED]`,  `[BREAKING]`
 
+
+## [3.0.1]()
+
+### [3.0.1-beta-2]()
+
+* Koin Gradle Plugin is back
+* Fix back Ktor feature starter
+
+### [3.0.1-beta-1]()
+
+* Update Platform tools for default Lazy Mode - https://github.com/InsertKoinIO/koin/pull/1031
+* Relax Typing resolution constraints - https://github.com/InsertKoinIO/koin/pull/1032
+* Update Ktor 1.5.2
+* Injection parameters doc update
+* Koin Native KClass in hashcode naming - https://github.com/InsertKoinIO/koin/pull/1036
+* Jetpack compose Beta01 - https://github.com/InsertKoinIO/koin/pull/1037
+* Fix getAll operator, to look in linked scopes - https://github.com/InsertKoinIO/koin/pull/1038
+* Ktor check for existing KoinApplication ready - https://github.com/InsertKoinIO/koin/pull/1023
+* Work manager resolution fix - https://github.com/InsertKoinIO/koin/pull/1018 
+* Koin Gradle Plugin drop for now (many issues for Android side)
+
+### [3.0.1-beta-6]()
+
+* Maven central publication scripts
+
+### [3.0.1-alpha-3]()
+
+* Merge branch 2.2.x & 3.0.0
+* New folder modules/strategy
+* Merge of main Android modules (koin-androidx-scope, koin-androidx-viewmodel are merged in koin-android)
+* Update Gradle dependencies to use proper `api` / `implementation`
+* Refresh Scope API
+
+## [3.0.0]()
+
+* first attempt of Koin Multiplatform version
+
+## [2.2.2]()
+
+* `[ADDED]` `[android]` FragmentScope class is now linked to its parent ActivityScope class
+* `[FIXED]` `[core]` fixed back to handle any type of property (not only String). File properties are saved as Strings. 
+* `[FIXED]` `[android]` ViewModel factory use DefaultViewModelFactory by default, StateViewModelFactory if `state` parameter is used.
+
+
+## [2.2.1]()
+
+* `[FIXED]` `[android]` activityScope & fragmentScope are not injecting source to avoid leak through ViewModel support handler - https://github.com/InsertKoinIO/koin/issues/953
+* `[UPDATE]` `[koin-androidx-compose]` version 1.0.0-alpha07
+
+
+## [2.2.0]()
+
+* `[FIXED]` `[core]` GetOrNull hide exceptions - https://github.com/InsertKoinIO/koin/issues/913
+* `[FIXED]` `[core]` SingleInstanceFactory concurrency fixed - https://github.com/InsertKoinIO/koin/pull/914
+* `[ADDED]` `[core]` add `createEagerInstances` parameter to `Koin.loadModule` , `Koin.loadModules` 
+* `[FIXED]` `[core]` @KoinApiExtension is using Warning compiler message, not error
+* `[FIXED]` `[androidx-compose]` - Remove lazy API, as things are not sure for now about resolving Lazy<T> in a remember block (to be foloowed later). Best is to keep it with `get()` & `getViewModel()` in @Composable
+* `[FIXED]` `[core]` Replace back Lazy(None) to standard Lazy delegate - https://github.com/InsertKoinIO/koin/issues/797
+* `[ADDED]` `[core]` @KoinInternal to help protect internal components, without reusing @KoinApiExtension - dedicated to KoinComponent
+* `[FIXED]` `[core]` Scope to drop extra declared definitions - https://github.com/InsertKoinIO/koin/issues/758 
+* `[FIXED]` `[core]` Allow empty Scope declaration. Allow redeclaration of same scope, to complete it. 
+* `[FIXED]` `[core, android, androidx, test]` Inject is ny default is using `LazyThreadSafetyMode.SYNCHRONIZED` by default
+* `[FIXED]` `[android, androidx]` by viewModel is using `LazyThreadSafetyMode.NONE` by default
+* `[ADDED]` `[core, android, androidx, test]` Inject allow to specify `mode`, to specify `LazyThreadSafetyMode`
+* `[FIXED]` `[core]` hide to internal GlobalContext functions, to avoid redundancy with context.* functions: org.koin.core.context.GlobalContext.startKoin -> org.koin.core.context.startKoin
+* `[FIXED]` `[androidx]` bring back ViewModel compat for androidx
+
+
+### [2.2.0-rc-3]()
+
+* `[FIXED]` Fix Scoped Components (ScopeActivity, ScopeFragment & ScopeService) to keep `scope` lazy and avoid forced initialisation
+
+### [2.2.0-rc-2]()
+
+* `[FIXED]` AndroidX ViewModel API merge for stateViewModel. No need anymore to pass Bundle as injected parameters, jsut use `get()`
+* `[FIXED]` Resolution API to precise generic type to `Any`
+
+
+### [2.2.0-rc-1]()
+
+* `[ADDED]` JetNews Compose app example 
+
+### [2.2.0-beta-2]()
+
+Updated to kotlin 1.4.10
+
+_koin-androidx-scope_
+
+* `[FIXED]` added `scopeActivity` & `requireScopeActivity()` API on ScopeFragment
+
+_koin-androidx-compose_
+
+* `[ADDED]` New API to inject Jetpack Compose: `get()`, `by inject()`, `getKoin()`
+* `[ADDED]` New API to inject Jetpack Compose with ViewModel: `getViewModel()`, `by viewModel()`
+
+_koin-androidx-workmanager_
+
+* `[ADDED]` New API to declare your `ListenableWorker` with `worker { }` DSL
+* `[ADDED]` KoinWorkerFactory wired to the standard WorkManagerFactory, to let build declared component. Use `workManagerFactory()` in your `KoinApplication` DSL to setup the WorkManagerFactory. (nb: tedious to checkModules - as it depends on android internals)
+
+
+_koin-core_
+
+* `[ADDED]` KoinExtensionAPI: annotation for tagging Koin API usage. i.e: KoinComponent requires OptIn, as it's part of Koin API extension
+* `[FIXED]` turn all API to internal as possible
+
+_koin-test_
+
+* `[FIXED]` revert `AutoCloseKoinTest` to class, add `ClosingKoinTest` interface
+
+### [2.2.0-beta-1]()
+
+_koin-androidx-scope_
+
+* `[ADDED]` New `ScopeActivity`. `ScopeFragment`, `ScopeService` to enable Scope API direclty into Android components. Offers injection directly from tied Scope.
+* `[BREAKING]` Old Scope API extensions are deprecated: `scope`, `lifecycleScope`
+
+_koin-android-scope_
+
+* `[ADDED]` New `ScopeActivity`. `ScopeFragment`, `ScopeService` to enable Scope API direclty into Android components. Offers injection directly from tied Scope.
+* `[BREAKING]` Old Scope API extensions are deprecated: `scope`, `lifecycleScope`
+
+_koin-androidx-viewmodel_
+
+* `[ADDED]` New `ViewModelOwnerDefinition` API definition for lazy define ViewModelStore & SavedStateRegistryOwner
+* `[BREAKING]` rewrite ViewModel API to better use StateViewModel factory and allow to use `ViewModelOwnerDefinition = () -> ViewModelOwner` ViewModelOwner lazy definition. Bundle is now used as `state` lazy attributes, `BundleDefinition = () -> Bundle`
+* `[ADDED]` verification to help check parameter injection for SavedStateRegistryOwner, as the right argument (misplaced injection param)
+* `[ADDED]` New `ViewModelOwnerDefinition` API definition for lazy define ViewModelStore & SavedStateRegistryOwner
+* `[BREAKING]` rewrite ViewModel API to better use StateViewModel factory and allow to use `ViewModelOwnerDefinition = () -> ViewModelOwner` ViewModelOwner lazy definition. Bundle is now used as `state` lazy attributes, `BundleDefinition = () -> Bundle`
+* `[ADDED]` verification to help check parameter injection for SavedStateRegistryOwner, as the right argument (misplaced injection param)
+
+_koin-android-viewmodel_
+
+* `[ADDED]` New `ViewModelOwnerDefinition` API definition for lazy define ViewModelStore
+* `[BREAKING]` rewrite ViewModel API and allow to use `ViewModelOwnerDefinition = () -> ViewModelOwner` ViewModelOwner lazy definition
+* `[ADDED]` New `ViewModelOwnerDefinition` API definition for lazy define ViewModelStore
+* `[BREAKING]` rewrite ViewModel API and allow to use `ViewModelOwnerDefinition = () -> ViewModelOwner` ViewModelOwner lazy definition
+
+_koin-core_
+
+* `[FIXED]` fixed time API - Kotlin 1.4
+* `[ADDED]` New `KoinScopeComponent` to help build component with Koin scopes
+* `[REMOVED]` removed generic Scope API extensions, was preivously on any class. Please use now `KoinScopeComponent`
+* `[DEPRECATED]` KoinContextHandler in favor of GlobalContext
+* `[ADDED]` Better Definition to help further Kotlin Compiler Plugin, simplify Module loading process (API to help declare definition without DSL)
+* `[REMOVED]` ScopeDefinition internal from module, and prefer qualifier to avoid create stucture outside of registry
+* `[REMOVED]` removed inconsistent synchronized calls
+* `[ADDED]` cleaned synchronized API - better call from GlobalContext to ensure synced call
+* `[BREAKING]` empty scope is not taken in account anymore, a scope definition is created only if there is at least one scoped definition
+* `[ADDED]` Injection parameters can be used directly as a dependency and can be resolved as `get()` or directly with builder API
+* `[FIXED]` fixed starting context effect (deprecating KoinContextHanlder for GlobalContext)
+
+_koin-test_
+
+* `[FIXED]` fixed checkModules to use Mock for injected parameters or default origin value of a Scope
+* `[ADDED]` setup detault values for injected parameters, for checkModules
+* `[BREAKING]` `AutoCloseKoinTest` is now an interface, please remove any constructor
+* `[UPDATED]` fixed `DefinitionParameters` to add the ability to know the injected type value
+
+_koin-test-junit5_
+
+* `[ADDED]` JUnit5 test module
+
+## [2.1.6]()
+
+_koin-core_
+
+* `[BREAKING]` Disable property type cast https://github.com/InsertKoinIO/koin/pull/781
+* `[FIXED]` Scope issue - Breaking looping linked scopes when first got instance https://github.com/InsertKoinIO/koin/pull/775
+* `[FIXED]` On the fly declaration with primary type fix - https://github.com/InsertKoinIO/koin/pull/773
+
+_koin-androidx-viewmodel_
+
+* `[FIXED]` stateViewModel bundle argument fixed - https://github.com/InsertKoinIO/koin/pull/795/files
+* `[ADDED]` added `stateSharedViewModel` extensions for `Fragment` https://github.com/InsertKoinIO/koin/pull/768/files
+
+_koin-androidx-fragment_
+
+* `[FIXED]` Add fallback for instantiate function in FragmentFactory - https://github.com/InsertKoinIO/koin/pull/742
+
+_koin-test_
+
+* `[FIXED]` KoinTestRule test exception handling - https://github.com/InsertKoinIO/koin/pull/808
+
+_koin-gradle-plugin_
+
+* `[FIXED]` Fixed Koin gradle plugin task for Kotlin & Android project. Added `checkAndroidModules` task  - https://github.com/InsertKoinIO/koin/pull/817
+
+
+## [2.1.5]()
+
+_Core_
+
+* `[FIXED]` - declare to use reified type
+* `[FIXED]` - Qualifier type as pure string
+* `[FIXED]` - docs contribution
+* `[UPDATED]` - Kotlin 1.3.71
+
+
+_Ktor_
+
+* `[ADDED]` - Contributions about modules and events
+
+_AndroidX-Fragment_
+
+* `[FIXED]` - contribution to help fallback on empty constructor instance for FragmentFactory
+
+## [2.1.4]()
+
+_Core_
+
+* `[ADDED]` - Scope's source value to return the object instance, source of the scope 
+
 ## [2.1.3]()
 
 * `[FIXED]` - maven metadata config :(
@@ -180,7 +393,7 @@ _Android_
 
 _Android-Scope_
 
-* `[UPDATED]` - rework according to new Scope API (manage compelte Scope Lifecycle)
+* `[UPDATED]` - rework according to new Scope API (manage complete Scope Lifecycle)
 * `[ADDED]` - `currentScope` property scope tied to current Activity or Fragment
 * `[ADDED]` - `currentScope` is aware of any `KoinComponent` & currentScope override
 * `[UPDATED]` - ScopeID generation
@@ -211,7 +424,7 @@ _Core_
 * `[UPDATED]` - startKoin replaced with startKoin DSL and koin in global context
 * `[UPDATED]` - complete internals rewritten for performances optimisation (startup & injection)
 * `[UPDATED]` - `KoinComponent` now can override `getKoin()` to target a custom Koin instance & `currentScope()` to target a Scope that is used for all injections
-* `[ADDED]` - koinApplication function to help declare an instance  for a local context, in ordoer to help isolated Koin instances
+* `[ADDED]` - koinApplication function to help declare an instance  for a local context, in order to help isolated Koin instances
 * `[UPDATED]` - rework Scope API (multiple instances definitions, properties, release, callback ...)
 * `[UPDATED]` - rework Scope DSL (scope/scoped) & lock single/factory
 * `[UPDATED]` - rework internals to use root Scope & separate Scope instances, with different bean registry
@@ -334,7 +547,7 @@ _Core_
 * `[ADDED]` - asciidoc doc updated - [#121](https://github.com/InsertKoinIO/koin/issues/121) - [#100](https://github.com/InsertKoinIO/koin/issues/100) - [#102](https://github.com/InsertKoinIO/koin/issues/102) - [#103](https://github.com/InsertKoinIO/koin/issues/103)
 * `[UPDATED]` - Injection parameter API with destructured declaration - [#133](https://github.com/InsertKoinIO/koin/issues/133)
 * `[ADDED]` - Preload instances with `createAtStart` - [#141](https://github.com/InsertKoinIO/koin/issues/141)
-* `[UPDATED]` - Explicit bean/module overide - [#123](https://github.com/InsertKoinIO/koin/issues/123)
+* `[UPDATED]` - Explicit bean/module override - [#123](https://github.com/InsertKoinIO/koin/issues/123)
 * `[FIXED]` - bind operator check assignable types
 
 
@@ -461,8 +674,8 @@ _Core_
 
 * `[FIXED]` Context resolution and modulePath isolation reworked - now fully functionnal
 * `[FIXED]` Stack resolution
-* `[ADDED]` `StandAloneContext` function `loadKoinModules` to load Koin modules wether Koin is already started
-* `[ADDED]` `StandAloneContext` function `loadProperties` to load Koin properties wether Koin is already started
+* `[ADDED]` `StandAloneContext` function `loadKoinModules` to load Koin modules whether Koin is already started
+* `[ADDED]` `StandAloneContext` function `loadProperties` to load Koin properties whether Koin is already started
 * `[ADDED]` `by inject()` function handle parameters to definition ([#59](https://github.com/Ekito/koin/issues/59))
 * `[FIXED]` Logging with class name need introspection
 * `[ADDED]` Context lifecycle notification callback - to allow a callback when `releaseContext()` is called on a context. You can register with `StandAloneContext.registerContextCallBack()` ([#58](https://github.com/Ekito/koin/pull/58))
@@ -492,7 +705,7 @@ _Core_
 _Android Architecture_
 
 <div class="alert alert-primary" role="alert">
-  Now declare your ViewModel lazyly in attributes, with <b>by viewModel()</b> like <b>by inject()</b>
+  Now declare your ViewModel lazily in attributes, with <b>by viewModel()</b> like <b>by inject()</b>
 </div>
 
 * `by viewModel()` lazy function call the `getViewModel()` function and allow `val` attribute declaration of your `ViewModel` (like with `by inject()`) - ([issue #37](https://github.com/Ekito/koin/issues/37))
@@ -552,13 +765,13 @@ _Core_
 
 * Simplified DSL modules: no more need of `Module` class. Now use directly the `applicationContext`function
 * Default Koin Logger to `PrintLogger` instead of `EmptyLogger`
-* a definition can be overriden (with a definition same name and type)
+* a definition can be overridden (with a definition same name and type)
 * DSL `provide` aliases with `bean` and `factory`
 * direct interface binding writing style (avoid to use `bind` keyword)
 * Koin instances resolution is now thread safe and compatible with coroutines
 * starter chain reviewed to allow better extension of `startKoin()`
-* better logs to display how instance and reoslution are made
-* Context isolation disabled by default. Can be activitaed later
+* better logs to display how instance and resolution are made
+* Context isolation disabled by default. Can be activated later
 
 _Android_
 
@@ -633,7 +846,7 @@ Android
 * fix/better extensions for Android
 * `bindProperty()` renamed to `setProperty()`
 * `startAndroidContext()` has been renamed to `startKoin()`
-* ContextAware Components can be configured for drop stratgey (onDestroy or onPause). Default method is onPause
+* ContextAware Components can be configured for drop strategy (onDestroy or onPause). Default method is onPause
 * load assets/koin.properties if present
 
 ## [0.5.2]()
@@ -698,7 +911,7 @@ The **dry run** feature, allows to run all of you modules in order to check if d
 _DSL_
 
 * replaced `declareContext{}` has been renamed `applicationContext{}`, and behind gives a better idea that you are describing your application context (the root context of your app)
-* Updated `modulePath(){}`has been dropped for `context(){}` - *context* describes a sub context of your application, has a a name and can have also sub context itself (sub contexts are hierarchicals)
+* Updated `modulePath(){}`has been dropped for `context(){}` - *context* describes a sub context of your application, has a a name and can have also sub context itself (sub contexts are hierarchical)
 * Updated `bind{}` doesn't need lambda anymore to declare your bound class, but just the class in argument: `bind()`
 * Added `provideFactory` is a DSL keyword to provide a factory definition instead of singleton
 
@@ -752,7 +965,7 @@ _Sample App_
 
 _DSL_
 
-* Module/AndroiModule class must now give a `context()` function implementation, to return a Context object. The `declareContext` function unlock the Koin DSL to describe dependencies and injection:
+* Module/AndroidModule class must now give a `context()` function implementation, to return a Context object. The `declareContext` function unlock the Koin DSL to describe dependencies and injection:
 
 ```Kotlin
 class MykModule : Module() {
@@ -832,8 +1045,9 @@ val ctx = Koin().init(applicationContext).build(Module1(),Module2()...)
 Internal rework for simpler use with Scopes:
 * `Koin().build()` return KoinContext
 * factory, stack operators have been removed, for the modulePath fatures
-* delete/remove replcaed with `release()` Scope operation
+* delete/remove replaced with `release()` Scope operation
 * import is replaced with module instances load
 * All reflection & kotlin-reflect code have been removed
+
 
 
